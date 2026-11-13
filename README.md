@@ -35,7 +35,7 @@ with forecasting-based autoscaling techniques.
 
 ## 4. Dataset
 
-Google Cluster Data is used as the workload source.
+Google Cluster Data v1 (2009) is used as the workload source.
 
 The project processes CPU usage records and aggregates them
 into five-minute workload intervals.
@@ -93,7 +93,7 @@ Workload-Autoscaling/
 
 Clone the repository:
 
-git clone YOUR_REPOSITORY_URL
+git clone [https://github.com/shambhavi-chandrawat/Workload-Forecasting-for-Autoscaling.git](https://github.com/shambhavi-chandrawat/Workload-Forecasting-for-Autoscaling.git)
 
 Move into the project folder:
 
