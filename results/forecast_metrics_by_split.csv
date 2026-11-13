@@ -1,0 +1,7 @@
+Training_Percentage,Model,RMSE,MAPE_Percentage
+70,Naive,88.1568,11.65
+70,Holt,83.3203,6.77
+75,Naive,94.2519,11.35
+75,Holt,92.0704,8.99
+80,Naive,99.1377,4.99
+80,Holt,99.7467,9.28

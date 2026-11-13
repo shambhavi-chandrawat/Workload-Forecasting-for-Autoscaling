@@ -1,0 +1,13 @@
+Training_Percentage,Strategy,SLA_Overload_Steps,Wasted_Capacity,Average_Servers
+70,Threshold,0,5401.41,5.83
+70,Naive Forecast,0,3409.54,5.0
+70,Holt Forecast,0,5715.92,5.96
+70,Hybrid Forecast,0,5715.92,5.96
+75,Threshold,0,4566.8,5.89
+75,Naive Forecast,0,2786.65,5.0
+75,Holt Forecast,0,2996.08,5.11
+75,Hybrid Forecast,0,4671.51,5.95
+80,Threshold,0,3988.34,6.0
+80,Naive Forecast,0,3988.34,6.0
+80,Holt Forecast,0,2628.23,5.19
+80,Hybrid Forecast,0,3988.34,6.0
