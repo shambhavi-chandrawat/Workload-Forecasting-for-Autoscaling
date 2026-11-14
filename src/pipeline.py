@@ -126,6 +126,8 @@ def load_workload():
         .sort_index()
     )
 
+    workload = workload.iloc[1:-1]
+    
     # Fill missing time intervals
     full_index = np.arange(
         workload.index.min(),
@@ -197,6 +199,94 @@ def holt_forecast(train, test_length):
 
         return naive_forecast(train, test_length)
 
+
+def rolling_forecasts(train, test):
+    """
+    Generate one-step-ahead forecasts.
+
+    After each prediction, the actual observation becomes
+    available for forecasting the next interval.
+    """
+
+    history = list(train.astype(float))
+
+    naive_predictions = []
+    holt_predictions = []
+
+    for actual_value in test.astype(float):
+
+        # Naive: use the most recently observed value
+        naive_predictions.append(history[-1])
+
+        # Holt: fit using observations available so far
+        try:
+            model = ExponentialSmoothing(
+                pd.Series(history),
+                trend="add",
+                damped_trend=True,
+                initialization_method="estimated"
+            )
+
+            fitted_model = model.fit(optimized=True)
+            prediction = float(fitted_model.forecast(1).iloc[0])
+            prediction = max(prediction, 0.0)
+
+        except Exception:
+            prediction = history[-1]
+
+        holt_predictions.append(prediction)
+
+        # Actual value becomes available after this interval
+        history.append(float(actual_value))
+
+    return (
+        np.array(naive_predictions),
+        np.array(holt_predictions)
+    )
+
+def rolling_forecasts(train, test):
+    """
+    Generate one-step-ahead forecasts.
+
+    After each prediction, the actual observation becomes
+    available for forecasting the next interval.
+    """
+
+    history = list(train.astype(float))
+
+    naive_predictions = []
+    holt_predictions = []
+
+    for actual_value in test.astype(float):
+
+        # Naive: use the most recently observed value
+        naive_predictions.append(history[-1])
+
+        # Holt: fit using observations available so far
+        try:
+            model = ExponentialSmoothing(
+                pd.Series(history),
+                trend="add",
+                damped_trend=True,
+                initialization_method="estimated"
+            )
+
+            fitted_model = model.fit(optimized=True)
+            prediction = float(fitted_model.forecast(1).iloc[0])
+            prediction = max(prediction, 0.0)
+
+        except Exception:
+            prediction = history[-1]
+
+        holt_predictions.append(prediction)
+
+        # Actual value becomes available after this interval
+        history.append(float(actual_value))
+
+    return (
+        np.array(naive_predictions),
+        np.array(holt_predictions)
+    )
 
 # --------------------------------------------------
 # 4. FORECAST EVALUATION
@@ -321,13 +411,18 @@ def run_experiments(workload):
         split_index = int(len(workload) * split)
         train = workload.iloc[:split_index]
         test = workload.iloc[split_index:]
+
         if len(test) == 0 or len(train) < 2:
-            continue
+             continue
 
-        naive_predictions = naive_forecast(train, len(test))
-        holt_predictions = holt_forecast(train, len(test))
-        predictions = {"Naive": naive_predictions, "Holt": holt_predictions}
-
+        naive_predictions, holt_predictions = rolling_forecasts(
+             train, test
+        )
+        predictions = {
+            "Naive": naive_predictions,
+            "Holt": holt_predictions
+        
+        }
         # Capacity calibration uses training data only.
         server_capacity = max(float(train.quantile(0.90)) / 4, 0.01)
         initial_servers = int(np.ceil(
@@ -502,79 +597,126 @@ def run_failure_injection(experiment_data):
 # 8. GENERATE GRAPHS
 # --------------------------------------------------
 
+
 def generate_graphs(workload, forecast_df, scaling_df):
 
     print("\nGenerating graphs...")
 
-    # Workload graph
+    # -----------------------------------
+    # 1. WORKLOAD GRAPH
+    # -----------------------------------
+
     plt.figure(figsize=(12, 5))
 
-    plt.plot(workload.values)
+    plt.plot(
+        workload.values,
+        color="royalblue",
+        linewidth=1.8,
+        label="CPU Workload"
+    )
 
-    plt.title("Google Cluster CPU Workload")
+    plt.title("Google Cluster CPU Workload", fontsize=15)
     plt.xlabel("Time Interval (5 minutes)")
     plt.ylabel("Normalized CPU Demand")
-    plt.grid(True)
+
+    plt.legend()
+    plt.grid(True, linestyle="--", alpha=0.5)
 
     plt.tight_layout()
 
     plt.savefig(
-        RESULTS_DIR / "workload.png"
+        RESULTS_DIR / "workload.png",
+        dpi=300,
+        bbox_inches="tight"
     )
 
     plt.close()
 
-    # Forecast comparison graph
+    # -----------------------------------
+    # 2. FORECAST COMPARISON GRAPH
+    # -----------------------------------
+
     first_split = forecast_df[
         forecast_df["Training_Percentage"] == 70
     ]
 
     plt.figure(figsize=(8, 5))
 
-    plt.bar(
-        first_split["Model"],
-        first_split["RMSE"]
+    models = first_split["Model"].tolist()
+    rmse_values = first_split["RMSE"].tolist()
+
+    bars = plt.bar(
+        models,
+        rmse_values,
+        color=["cornflowerblue", "mediumseagreen"],
+        width=0.55,
+        edgecolor="black"
     )
 
-    plt.title("Forecast Model RMSE Comparison")
+    plt.title("Forecast Model RMSE Comparison (70% Split)", fontsize=14)
     plt.xlabel("Forecasting Model")
     plt.ylabel("RMSE")
-    plt.grid(axis="y")
 
+    plt.bar_label(bars, fmt="%.2f", padding=4)
+
+    plt.grid(axis="y", linestyle="--", alpha=0.5)
     plt.tight_layout()
 
     plt.savefig(
-        RESULTS_DIR / "forecast_comparison.png"
+        RESULTS_DIR / "forecast_comparison.png",
+        dpi=300,
+        bbox_inches="tight"
     )
 
     plt.close()
 
-    # Autoscaling comparison graph
+    # -----------------------------------
+    # 3. AUTOSCALING COMPARISON GRAPH
+    # -----------------------------------
+
     first_scaling = scaling_df[
         scaling_df["Training_Percentage"] == 70
     ]
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(11, 6))
 
-    plt.bar(
-        first_scaling["Strategy"],
-        first_scaling["Average_Servers"]
+    strategies = first_scaling["Strategy"].tolist()
+    server_values = first_scaling["Average_Servers"].tolist()
+
+    bars = plt.bar(
+        strategies,
+        server_values,
+        color=[
+            "cornflowerblue",
+            "mediumseagreen",
+            "darkorange",
+            "mediumpurple"
+        ],
+        width=0.65,
+        edgecolor="black"
     )
 
-    plt.title("Autoscaling Strategy Comparison")
+    plt.title("Autoscaling Strategy Comparison (70% Split)", fontsize=14)
     plt.xlabel("Autoscaling Strategy")
     plt.ylabel("Average Number of Servers")
-    plt.xticks(rotation=20)
 
+    plt.bar_label(bars, fmt="%.2f", padding=4)
+
+    plt.xticks(rotation=15, ha="right")
+
+    plt.grid(axis="y", linestyle="--", alpha=0.5)
     plt.tight_layout()
 
     plt.savefig(
-        RESULTS_DIR / "autoscaling_comparison.png"
+        RESULTS_DIR / "autoscaling_comparison.png",
+        dpi=300,
+        bbox_inches="tight"
     )
 
     plt.close()
 
     print("Graphs saved successfully.")
+
 
 
 # --------------------------------------------------

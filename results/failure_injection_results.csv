@@ -1,13 +1,13 @@
 Scenario,Strategy,Invalid_Values_Injected,Invalid_Values_Sanitized,SLA_Overload_Steps,Wasted_Capacity,Average_Servers
-Normal Workload,Threshold,0,0,0,5401.41,5.83
-Normal Workload,Naive Forecast,0,0,0,3409.54,5.0
-Normal Workload,Holt Forecast,0,0,0,5715.92,5.96
-Normal Workload,Hybrid Forecast,0,0,0,5715.92,5.96
-Injected Workload Spike,Threshold,0,0,1,5692.02,6.04
-Injected Workload Spike,Naive Forecast,0,0,1,3280.8,5.0
-Injected Workload Spike,Holt Forecast,0,0,1,5482.35,5.96
-Injected Workload Spike,Hybrid Forecast,0,0,1,6006.53,6.17
-Bad Data (Sanitized),Threshold,3,3,2,5785.06,5.43
-Bad Data (Sanitized),Naive Forecast,3,3,0,4167.1,5.0
-Bad Data (Sanitized),Holt Forecast,3,3,0,6473.48,5.96
-Bad Data (Sanitized),Hybrid Forecast,3,3,0,6473.48,5.96
+Normal Workload,Threshold,0,0,0,5062.73,5.83
+Normal Workload,Naive Forecast,0,0,0,5062.73,5.83
+Normal Workload,Holt Forecast,0,0,0,5377.41,5.96
+Normal Workload,Hybrid Forecast,0,0,0,5377.41,5.96
+Injected Workload Spike,Threshold,0,0,1,5341.13,6.04
+Injected Workload Spike,Naive Forecast,0,0,1,4816.65,5.83
+Injected Workload Spike,Holt Forecast,0,0,1,5131.34,5.96
+Injected Workload Spike,Hybrid Forecast,0,0,1,5655.82,6.17
+Bad Data (Sanitized),Threshold,3,3,2,5826.44,5.43
+Bad Data (Sanitized),Naive Forecast,3,3,0,6222.74,5.83
+Bad Data (Sanitized),Holt Forecast,3,3,0,6537.43,5.96
+Bad Data (Sanitized),Hybrid Forecast,3,3,0,6537.43,5.96

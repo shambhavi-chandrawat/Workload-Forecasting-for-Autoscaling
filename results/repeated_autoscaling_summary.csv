@@ -1,13 +1,13 @@
 Training_Percentage,Strategy,SLA_Overload_Mean,SLA_Overload_Std,Wasted_Capacity_Mean,Wasted_Capacity_Std,Average_Servers_Mean,Average_Servers_Std
-70,Holt Forecast,0.0,0.0,5715.92,0.0,5.96,0.0
-70,Hybrid Forecast,0.0,0.0,5715.92,0.0,5.96,0.0
-70,Naive Forecast,0.0,0.0,3409.54,0.0,5.0,0.0
-70,Threshold,0.0,0.0,5401.41,0.0,5.83,0.0
-75,Holt Forecast,0.0,0.0,2996.08,0.0,5.11,0.0
-75,Hybrid Forecast,0.0,0.0,4671.51,0.0,5.95,0.0
-75,Naive Forecast,0.0,0.0,2786.65,0.0,5.0,0.0
-75,Threshold,0.0,0.0,4566.8,0.0,5.89,0.0
-80,Holt Forecast,0.0,0.0,2628.23,0.0,5.19,0.0
-80,Hybrid Forecast,0.0,0.0,3988.34,0.0,6.0,0.0
-80,Naive Forecast,0.0,0.0,3988.34,0.0,6.0,0.0
-80,Threshold,0.0,0.0,3988.34,0.0,6.0,0.0
+70,Holt Forecast,0.0,0.0,5377.41,0.0,5.96,0.0
+70,Hybrid Forecast,0.0,0.0,5377.41,0.0,5.96,0.0
+70,Naive Forecast,0.0,0.0,5062.73,0.0,5.83,0.0
+70,Threshold,0.0,0.0,5062.73,0.0,5.83,0.0
+75,Holt Forecast,0.0,0.0,4324.93,0.0,5.95,0.0
+75,Hybrid Forecast,0.0,0.0,4324.93,0.0,5.95,0.0
+75,Naive Forecast,0.0,0.0,4220.15,0.0,5.89,0.0
+75,Threshold,0.0,0.0,4220.15,0.0,5.89,0.0
+80,Holt Forecast,0.0,0.0,3363.3200000000006,0.0,6.0,0.0
+80,Hybrid Forecast,0.0,0.0,3363.3200000000006,0.0,6.0,0.0
+80,Naive Forecast,0.0,0.0,3363.3200000000006,0.0,6.0,0.0
+80,Threshold,0.0,0.0,3363.3200000000006,0.0,6.0,0.0

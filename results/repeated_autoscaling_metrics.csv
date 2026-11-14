@@ -1,61 +1,61 @@
 Run,Training_Percentage,Strategy,SLA_Overload_Steps,Wasted_Capacity,Average_Servers
-1,70,Threshold,0,5401.41,5.83
-1,70,Naive Forecast,0,3409.54,5.0
-1,70,Holt Forecast,0,5715.92,5.96
-1,70,Hybrid Forecast,0,5715.92,5.96
-2,70,Threshold,0,5401.41,5.83
-2,70,Naive Forecast,0,3409.54,5.0
-2,70,Holt Forecast,0,5715.92,5.96
-2,70,Hybrid Forecast,0,5715.92,5.96
-3,70,Threshold,0,5401.41,5.83
-3,70,Naive Forecast,0,3409.54,5.0
-3,70,Holt Forecast,0,5715.92,5.96
-3,70,Hybrid Forecast,0,5715.92,5.96
-4,70,Threshold,0,5401.41,5.83
-4,70,Naive Forecast,0,3409.54,5.0
-4,70,Holt Forecast,0,5715.92,5.96
-4,70,Hybrid Forecast,0,5715.92,5.96
-5,70,Threshold,0,5401.41,5.83
-5,70,Naive Forecast,0,3409.54,5.0
-5,70,Holt Forecast,0,5715.92,5.96
-5,70,Hybrid Forecast,0,5715.92,5.96
-1,75,Threshold,0,4566.8,5.89
-1,75,Naive Forecast,0,2786.65,5.0
-1,75,Holt Forecast,0,2996.08,5.11
-1,75,Hybrid Forecast,0,4671.51,5.95
-2,75,Threshold,0,4566.8,5.89
-2,75,Naive Forecast,0,2786.65,5.0
-2,75,Holt Forecast,0,2996.08,5.11
-2,75,Hybrid Forecast,0,4671.51,5.95
-3,75,Threshold,0,4566.8,5.89
-3,75,Naive Forecast,0,2786.65,5.0
-3,75,Holt Forecast,0,2996.08,5.11
-3,75,Hybrid Forecast,0,4671.51,5.95
-4,75,Threshold,0,4566.8,5.89
-4,75,Naive Forecast,0,2786.65,5.0
-4,75,Holt Forecast,0,2996.08,5.11
-4,75,Hybrid Forecast,0,4671.51,5.95
-5,75,Threshold,0,4566.8,5.89
-5,75,Naive Forecast,0,2786.65,5.0
-5,75,Holt Forecast,0,2996.08,5.11
-5,75,Hybrid Forecast,0,4671.51,5.95
-1,80,Threshold,0,3988.34,6.0
-1,80,Naive Forecast,0,3988.34,6.0
-1,80,Holt Forecast,0,2628.23,5.19
-1,80,Hybrid Forecast,0,3988.34,6.0
-2,80,Threshold,0,3988.34,6.0
-2,80,Naive Forecast,0,3988.34,6.0
-2,80,Holt Forecast,0,2628.23,5.19
-2,80,Hybrid Forecast,0,3988.34,6.0
-3,80,Threshold,0,3988.34,6.0
-3,80,Naive Forecast,0,3988.34,6.0
-3,80,Holt Forecast,0,2628.23,5.19
-3,80,Hybrid Forecast,0,3988.34,6.0
-4,80,Threshold,0,3988.34,6.0
-4,80,Naive Forecast,0,3988.34,6.0
-4,80,Holt Forecast,0,2628.23,5.19
-4,80,Hybrid Forecast,0,3988.34,6.0
-5,80,Threshold,0,3988.34,6.0
-5,80,Naive Forecast,0,3988.34,6.0
-5,80,Holt Forecast,0,2628.23,5.19
-5,80,Hybrid Forecast,0,3988.34,6.0
+1,70,Threshold,0,5062.73,5.83
+1,70,Naive Forecast,0,5062.73,5.83
+1,70,Holt Forecast,0,5377.41,5.96
+1,70,Hybrid Forecast,0,5377.41,5.96
+2,70,Threshold,0,5062.73,5.83
+2,70,Naive Forecast,0,5062.73,5.83
+2,70,Holt Forecast,0,5377.41,5.96
+2,70,Hybrid Forecast,0,5377.41,5.96
+3,70,Threshold,0,5062.73,5.83
+3,70,Naive Forecast,0,5062.73,5.83
+3,70,Holt Forecast,0,5377.41,5.96
+3,70,Hybrid Forecast,0,5377.41,5.96
+4,70,Threshold,0,5062.73,5.83
+4,70,Naive Forecast,0,5062.73,5.83
+4,70,Holt Forecast,0,5377.41,5.96
+4,70,Hybrid Forecast,0,5377.41,5.96
+5,70,Threshold,0,5062.73,5.83
+5,70,Naive Forecast,0,5062.73,5.83
+5,70,Holt Forecast,0,5377.41,5.96
+5,70,Hybrid Forecast,0,5377.41,5.96
+1,75,Threshold,0,4220.15,5.89
+1,75,Naive Forecast,0,4220.15,5.89
+1,75,Holt Forecast,0,4324.93,5.95
+1,75,Hybrid Forecast,0,4324.93,5.95
+2,75,Threshold,0,4220.15,5.89
+2,75,Naive Forecast,0,4220.15,5.89
+2,75,Holt Forecast,0,4324.93,5.95
+2,75,Hybrid Forecast,0,4324.93,5.95
+3,75,Threshold,0,4220.15,5.89
+3,75,Naive Forecast,0,4220.15,5.89
+3,75,Holt Forecast,0,4324.93,5.95
+3,75,Hybrid Forecast,0,4324.93,5.95
+4,75,Threshold,0,4220.15,5.89
+4,75,Naive Forecast,0,4220.15,5.89
+4,75,Holt Forecast,0,4324.93,5.95
+4,75,Hybrid Forecast,0,4324.93,5.95
+5,75,Threshold,0,4220.15,5.89
+5,75,Naive Forecast,0,4220.15,5.89
+5,75,Holt Forecast,0,4324.93,5.95
+5,75,Hybrid Forecast,0,4324.93,5.95
+1,80,Threshold,0,3363.32,6.0
+1,80,Naive Forecast,0,3363.32,6.0
+1,80,Holt Forecast,0,3363.32,6.0
+1,80,Hybrid Forecast,0,3363.32,6.0
+2,80,Threshold,0,3363.32,6.0
+2,80,Naive Forecast,0,3363.32,6.0
+2,80,Holt Forecast,0,3363.32,6.0
+2,80,Hybrid Forecast,0,3363.32,6.0
+3,80,Threshold,0,3363.32,6.0
+3,80,Naive Forecast,0,3363.32,6.0
+3,80,Holt Forecast,0,3363.32,6.0
+3,80,Hybrid Forecast,0,3363.32,6.0
+4,80,Threshold,0,3363.32,6.0
+4,80,Naive Forecast,0,3363.32,6.0
+4,80,Holt Forecast,0,3363.32,6.0
+4,80,Hybrid Forecast,0,3363.32,6.0
+5,80,Threshold,0,3363.32,6.0
+5,80,Naive Forecast,0,3363.32,6.0
+5,80,Holt Forecast,0,3363.32,6.0
+5,80,Hybrid Forecast,0,3363.32,6.0
