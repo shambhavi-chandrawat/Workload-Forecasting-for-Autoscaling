@@ -127,7 +127,7 @@ def load_workload():
     )
 
     workload = workload.iloc[1:-1]
-    
+
     # Fill missing time intervals
     full_index = np.arange(
         workload.index.min(),
@@ -199,50 +199,6 @@ def holt_forecast(train, test_length):
 
         return naive_forecast(train, test_length)
 
-
-def rolling_forecasts(train, test):
-    """
-    Generate one-step-ahead forecasts.
-
-    After each prediction, the actual observation becomes
-    available for forecasting the next interval.
-    """
-
-    history = list(train.astype(float))
-
-    naive_predictions = []
-    holt_predictions = []
-
-    for actual_value in test.astype(float):
-
-        # Naive: use the most recently observed value
-        naive_predictions.append(history[-1])
-
-        # Holt: fit using observations available so far
-        try:
-            model = ExponentialSmoothing(
-                pd.Series(history),
-                trend="add",
-                damped_trend=True,
-                initialization_method="estimated"
-            )
-
-            fitted_model = model.fit(optimized=True)
-            prediction = float(fitted_model.forecast(1).iloc[0])
-            prediction = max(prediction, 0.0)
-
-        except Exception:
-            prediction = history[-1]
-
-        holt_predictions.append(prediction)
-
-        # Actual value becomes available after this interval
-        history.append(float(actual_value))
-
-    return (
-        np.array(naive_predictions),
-        np.array(holt_predictions)
-    )
 
 def rolling_forecasts(train, test):
     """
