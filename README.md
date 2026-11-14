@@ -1,166 +1,182 @@
+# Workload Forecasting for Autoscaling (Project-14) 
 
-# Workload Forecasting for Autoscaling
 
-## 1. Introduction
+## Project Overview
 
-Workload Forecasting for Autoscaling is a Python-based project
-that predicts future computing workload and simulates automatic
-resource allocation.
+Workload Forecasting for Autoscaling is a Python-based project that analyzes historical CPU workload data, predicts future workload demand, and compares different autoscaling strategies.
 
-The project compares traditional threshold-based autoscaling
-with forecasting-based autoscaling techniques.
+The project uses Google Cluster Data to study CPU utilization over time. It applies forecasting techniques to estimate upcoming workload and simulates how different autoscaling strategies allocate servers according to predicted or observed demand.
 
-## 2. Objectives
+A Streamlit dashboard is provided to visualize workload patterns, forecasting performance, autoscaling results, and failure injection experiments.
 
-- Analyze historical computing workload.
-- Forecast future CPU demand.
-- Compare Naive and Holt forecasting models.
-- Implement threshold-based autoscaling.
-- Implement forecast-based autoscaling.
-- Evaluate SLA overload and wasted capacity.
-- Test system behaviour under sudden workload spikes.
-- Evaluate forecasting performance using multiple training splits.
-- Perform repeated reproducibility checks.
-- Test system behaviour under invalid and missing workload data.
+## Objectives
 
-## 3. Technologies Used
+- Analyze historical CPU workload data.
+- Forecast future CPU demand using Naive and Holt forecasting methods.
+- Compare different autoscaling strategies.
+- Evaluate forecasting accuracy using RMSE and MAPE.
+- Analyze SLA overload and wasted server capacity.
+- Test system behavior under workload spikes and invalid data.
+- Present results through an interactive dashboard.
+
+## Features
+
+- CPU workload preprocessing and aggregation into 5-minute intervals.
+- Rolling one-step-ahead workload forecasting.
+- Comparison of Naive and Holt forecasting models.
+- Four autoscaling strategies:
+  - Threshold-based autoscaling
+  - Naive Forecast autoscaling
+  - Holt Forecast autoscaling
+  - Hybrid Forecast autoscaling
+- Performance evaluation using RMSE and MAPE.
+- Autoscaling evaluation using SLA overload steps, wasted capacity, and average servers.
+- Failure injection experiments for workload spikes and malformed data.
+- Graph generation using Matplotlib.
+- Interactive Streamlit dashboard.
+
+## Technologies Used
 
 - Python
-- NumPy
 - Pandas
+- NumPy
 - Matplotlib
 - Statsmodels
 - Streamlit
-- Certifi
 
-## 4. Dataset
+## Dataset
 
-Google Cluster Data v1 (2009) is used as the workload source.
+The project uses Google Cluster Data v1 to analyze CPU workload.
 
-The project processes CPU usage records and aggregates them
-into five-minute workload intervals.
+The workload is cleaned and aggregated into 5-minute intervals before being used for forecasting and autoscaling experiments.
 
-Dataset source:
-https://github.com/google/cluster-data
+## Project Structure
 
-## 5. Forecasting Models
-
-1. Naive Forecasting
-2. Holt Exponential Smoothing
-
-## 6. Autoscaling Strategies
-
-1. Threshold-Based Autoscaling
-2. Naive Forecast-Based Autoscaling
-3. Holt Forecast-Based Autoscaling
-4. Hybrid Forecast-Based Autoscaling
-
-## 7. Failure Injection
-
-The project evaluates autoscaling strategies under different scenarios:
-
-1. Normal Workload
-2. Injected Workload Spike
-3. Bad Data (Sanitized)
-
-Invalid workload values are handled through data sanitization
-before the simulation is performed.
-
-## 7. Project Structure
-
+```text
 Workload-Autoscaling/
-|
-|-- data/
-|
-|-- results/
-|   |-- workload_data.csv
-|   |-- forecast_metrics_by_split.csv
-|   |-- autoscaling_summary.csv
-|   |-- failure_injection_results.csv
-|   |-- repeated_forecast_summary.csv
-|   |-- repeated_autoscaling_summary.csv
-|
-|-- src/
-|   |-- pipeline.py
-|
-|-- app.py
-|-- run.py
-|-- requirements.txt
-|-- README.md
-|-- ARCHITECTURE.md
+│
+├── data/
+│   └── google_trace.csv.gz
+│
+├── results/
+│   ├── CSV result files
+│   └── Generated graphs
+│
+├── src/
+│   └── pipeline.py
+│
+├── app.py
+├── run.py
+├── requirements.txt
+├── README.md
+├── ARCHITECTURE.md
+└── .gitignore
+```
 
-## 8. Installation
+## Installation and Setup
 
-Clone the repository:
+1. Clone the repository:
 
-git clone [https://github.com/shambhavi-chandrawat/Workload-Forecasting-for-Autoscaling.git](https://github.com/shambhavi-chandrawat/Workload-Forecasting-for-Autoscaling.git)
+```bash
+git clone https://github.com/shambhavi-chandrawat/Workload-Forecasting-for-Autoscaling.git
+```
 
-Move into the project folder:
+2. Navigate to the project directory:
 
-cd Workload-Autoscaling
+```bash
+cd Workload-Forecasting-for-Autoscaling
+```
 
-Create virtual environment:
+3. Create a virtual environment:
 
-python3 -m venv .venv
+```bash
+python -m venv .venv
+```
 
-Activate environment:
+4. Activate the virtual environment.
 
+For macOS/Linux:
+
+```bash
 source .venv/bin/activate
+```
 
-Install dependencies:
+For Windows:
 
+```bash
+.venv\Scripts\activate
+```
+
+5. Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
-## 9. Execution
+## Running the Project
 
-Run the complete project using:
+Run the workload forecasting and autoscaling pipeline:
 
-python run.py
-
-This command automatically:
-- Processes the workload dataset.
-- Executes forecasting experiments.
-- Simulates autoscaling strategies.
-- Performs failure injection experiments.
-- Generates result files and graphs.
-- Launches the Streamlit dashboard.
-
-Alternatively, run individual components:
-
+```bash
 python src/pipeline.py
+```
 
+After the pipeline completes, generated CSV files and graphs will be available in the `results/` directory.
+
+Launch the Streamlit dashboard:
+
+```bash
 streamlit run app.py
+```
 
-## 10. Output
+Open the local URL displayed in the terminal to access the dashboard.
 
-The project generates:
+Alternatively, use the main runner if configured:
 
-- Historical workload analysis graph
-- Forecasting comparison graphs
-- Autoscaling comparison graphs
-- RMSE and MAPE evaluation metrics
-- Repeated experiment summary files
-- SLA overload measurements
-- Wasted capacity measurements
-- Failure injection results
-- Interactive Streamlit dashboard
+```bash
+python run.py
+```
 
-## 11. Limitations
+## Evaluation Metrics
 
-- The project uses a simulated autoscaling environment.
-- It does not provision real cloud infrastructure.
-- The selected historical trace is a short dataset.
-- Results depend on the selected workload and simulation assumptions.
-- Repeated runs currently use identical inputs and verify reproducibility rather than independent statistical variation.
-- The workload dataset contains only 76 aggregated intervals.
-- The workload trace is historical and may not represent modern cloud workloads.
-- MAPE evaluation excludes zero-demand intervals.
-- The simulator does not account for real cloud provisioning delays.
+| Metric | Description |
+|---|---|
+| RMSE | Measures forecasting error |
+| MAPE | Measures average percentage forecasting error |
+| SLA Overload Steps | Counts intervals where workload exceeds available capacity |
+| Wasted Capacity | Measures unused allocated server capacity |
+| Average Servers | Measures average number of allocated servers |
 
-## 12. Future Scope
+## Experimental Analysis
 
-- Use larger workload datasets.
-- Implement ARIMA and machine learning models.
-- Add real-time workload monitoring.
-- Integrate with cloud-based infrastructure.
-- Improve scaling decisions using adaptive policies.
+The project evaluates forecasting models using 70%, 75%, and 80% training splits.
+
+It also compares four autoscaling strategies under normal workload, injected workload spikes, and malformed-data scenarios.
+
+The actual experimental results are stored in the generated CSV files inside the `results/` directory.
+
+## Limitations
+
+- The project uses historical workload data rather than live cloud infrastructure.
+- Autoscaling is simulated and does not provision actual cloud servers.
+- Forecasting performance depends on the available dataset and workload patterns.
+- Experimental results represent the tested workload and configurations.
+
+## Future Scope
+
+- Integrate real-time workload monitoring.
+- Explore advanced forecasting models.
+- Extend the simulation to larger datasets.
+- Implement autoscaling on cloud platforms.
+- Improve workload spike detection and resource allocation.
+
+## Author
+### Group: O_P2
+
+**Shambhavi Chandrawat(1000025732)**
+**Shorya Rajput(1000024565)**
+**Kasish Singh(1000026074)**
+**Vivek Kumar Gupta(1000025291)**
+
+B.Tech Computer Science and Engineering
+DIT University
