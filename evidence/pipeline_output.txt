@@ -1,0 +1,49 @@
+=======================================================
+ WORKLOAD FORECASTING FOR AUTOSCALING
+=======================================================
+Dataset already exists.
+
+Loading workload dataset...
+Total workload intervals: 74
+
+Running experiment with 70% training data...
+
+Running experiment with 75% training data...
+
+Running experiment with 80% training data...
+Recorded 5 deterministic reruns per training split.
+Note: reruns use identical inputs; they test reproducibility, not statistical independence.
+
+Running failure injection experiments...
+Failure injection experiments completed (spike and malformed-data scenarios).
+
+Generating graphs...
+Graphs saved successfully.
+
+FORECASTING RESULTS
+ Training_Percentage Model    RMSE  MAPE_Percentage
+                  70 Naive 25.1833             5.34
+                  70  Holt 20.7828             4.47
+                  75 Naive 24.7524             5.15
+                  75  Holt 19.6011             4.19
+                  80 Naive 19.6201             3.74
+                  80  Holt 17.9729             3.59
+
+AUTOSCALING RESULTS
+ Training_Percentage        Strategy  SLA_Overload_Steps  Wasted_Capacity  Average_Servers
+                  70       Threshold                   0          5062.73             5.83
+                  70  Naive Forecast                   0          5062.73             5.83
+                  70   Holt Forecast                   0          5377.41             5.96
+                  70 Hybrid Forecast                   0          5377.41             5.96
+                  75       Threshold                   0          4220.15             5.89
+                  75  Naive Forecast                   0          4220.15             5.89
+                  75   Holt Forecast                   0          4324.93             5.95
+                  75 Hybrid Forecast                   0          4324.93             5.95
+                  80       Threshold                   0          3363.32             6.00
+                  80  Naive Forecast                   0          3363.32             6.00
+                  80   Holt Forecast                   0          3363.32             6.00
+                  80 Hybrid Forecast                   0          3363.32             6.00
+
+All experiments completed successfully!
+Check the results folder for CSV files and graphs.
+python src/pipeline.py  3.46s user 0.79s system 74% cpu 5.710 total
