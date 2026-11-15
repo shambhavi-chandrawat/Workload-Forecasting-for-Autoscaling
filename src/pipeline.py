@@ -1,3 +1,4 @@
+import argparse
 import ssl
 import certifi
 import gzip
@@ -32,6 +33,13 @@ DATA_URL = (
 
 INTERVAL_SECONDS = 300
 MAX_SERVERS = 100
+
+# Experiment settings. The defaults reproduce the main results in the report.
+# They can be overridden from the command line, for example:
+#   python src/pipeline.py --target 0.85 --splits 0.85 0.75 0.80
+TARGET_UTILIZATION = 0.70      # servers are sized so demand uses this share of capacity
+CAPACITY_DIVISOR = 4           # one server = (90th percentile of training demand) / this
+SPLIT_RATIOS = [0.70, 0.75, 0.80]
 REPEATED_RUNS = 5  # deterministic reruns for reproducibility checking
 
 
@@ -326,7 +334,7 @@ def simulate_autoscaling(
             raise ValueError("Unknown autoscaling strategy")
 
         required_servers = int(
-            np.ceil(expected_next_demand / (server_capacity * 0.70))
+            np.ceil(expected_next_demand / (server_capacity * TARGET_UTILIZATION))
         )
         servers = max(1, min(required_servers, MAX_SERVERS))
 
@@ -349,7 +357,7 @@ def run_experiments(workload):
     their standard deviation is expected to be zero.
     """
 
-    split_ratios = [0.70, 0.75, 0.80]
+    split_ratios = list(SPLIT_RATIOS)
     strategies = [
         "Threshold", "Naive Forecast", "Holt Forecast", "Hybrid Forecast"
     ]
@@ -361,7 +369,7 @@ def run_experiments(workload):
     first_split_data = None
 
     for split in split_ratios:
-        split_percent = int(split * 100)
+        split_percent = int(round(split * 100))
         print(f"\nRunning experiment with {split_percent}% training data...")
 
         split_index = int(len(workload) * split)
@@ -380,9 +388,9 @@ def run_experiments(workload):
         
         }
         # Capacity calibration uses training data only.
-        server_capacity = max(float(train.quantile(0.90)) / 4, 0.01)
+        server_capacity = max(float(train.quantile(0.90)) / CAPACITY_DIVISOR, 0.01)
         initial_servers = int(np.ceil(
-            float(train.iloc[-1]) / (server_capacity * 0.70)
+            float(train.iloc[-1]) / (server_capacity * TARGET_UTILIZATION)
         ))
         initial_servers = max(1, min(initial_servers, MAX_SERVERS))
 
@@ -592,8 +600,9 @@ def generate_graphs(workload, forecast_df, scaling_df):
     # 2. FORECAST COMPARISON GRAPH
     # -----------------------------------
 
+    first_percent = int(forecast_df["Training_Percentage"].iloc[0])
     first_split = forecast_df[
-        forecast_df["Training_Percentage"] == 70
+        forecast_df["Training_Percentage"] == first_percent
     ]
 
     plt.figure(figsize=(8, 5))
@@ -609,7 +618,9 @@ def generate_graphs(workload, forecast_df, scaling_df):
         edgecolor="black"
     )
 
-    plt.title("Forecast Model RMSE Comparison (70% Split)", fontsize=14)
+    plt.title(
+        f"Forecast Model RMSE Comparison ({first_percent}% Split)", fontsize=14
+    )
     plt.xlabel("Forecasting Model")
     plt.ylabel("RMSE")
 
@@ -631,7 +642,7 @@ def generate_graphs(workload, forecast_df, scaling_df):
     # -----------------------------------
 
     first_scaling = scaling_df[
-        scaling_df["Training_Percentage"] == 70
+        scaling_df["Training_Percentage"] == first_percent
     ]
 
     plt.figure(figsize=(11, 6))
@@ -652,7 +663,9 @@ def generate_graphs(workload, forecast_df, scaling_df):
         edgecolor="black"
     )
 
-    plt.title("Autoscaling Strategy Comparison (70% Split)", fontsize=14)
+    plt.title(
+        f"Autoscaling Strategy Comparison ({first_percent}% Split)", fontsize=14
+    )
     plt.xlabel("Autoscaling Strategy")
     plt.ylabel("Average Number of Servers")
 
@@ -679,7 +692,70 @@ def generate_graphs(workload, forecast_df, scaling_df):
 # 9. MAIN FUNCTION
 # --------------------------------------------------
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Workload forecasting and autoscaling experiments."
+    )
+    parser.add_argument(
+        "--target", type=float, default=TARGET_UTILIZATION,
+        help="target utilization used to size servers (default 0.70)"
+    )
+    parser.add_argument(
+        "--divisor", type=float, default=CAPACITY_DIVISOR,
+        help="server capacity = training P90 demand / divisor (default 4)"
+    )
+    parser.add_argument(
+        "--splits", type=float, nargs="+", default=SPLIT_RATIOS,
+        help="training fractions, for example 0.70 0.75 0.80"
+    )
+    parser.add_argument(
+        "--out", default=None,
+        help="results folder name (default: results, or results_sensitivity "
+             "when any setting differs from the defaults)"
+    )
+    args = parser.parse_args()
+
+    if not 0 < args.target <= 1:
+        parser.error("--target must be between 0 and 1")
+    if args.divisor <= 0:
+        parser.error("--divisor must be positive")
+    if any(not 0 < ratio < 1 for ratio in args.splits):
+        parser.error("--splits values must be between 0 and 1")
+
+    return args
+
+
+def apply_settings(args):
+    """Apply command-line settings and choose the results folder."""
+    global TARGET_UTILIZATION, CAPACITY_DIVISOR, SPLIT_RATIOS, RESULTS_DIR
+
+    TARGET_UTILIZATION = args.target
+    CAPACITY_DIVISOR = args.divisor
+    SPLIT_RATIOS = list(args.splits)
+
+    is_default = (
+        TARGET_UTILIZATION == 0.70
+        and CAPACITY_DIVISOR == 4
+        and SPLIT_RATIOS == [0.70, 0.75, 0.80]
+    )
+
+    if args.out:
+        RESULTS_DIR = ROOT / args.out
+    elif not is_default:
+        RESULTS_DIR = ROOT / "results_sensitivity"
+
+    RESULTS_DIR.mkdir(exist_ok=True)
+
+    print(
+        f"Settings: target={TARGET_UTILIZATION}, "
+        f"capacity divisor={CAPACITY_DIVISOR}, splits={SPLIT_RATIOS}"
+    )
+    print(f"Results folder: {RESULTS_DIR.name}/")
+
+
 def main():
+
+    apply_settings(parse_arguments())
 
     print("=" * 55)
     print(" WORKLOAD FORECASTING FOR AUTOSCALING")
